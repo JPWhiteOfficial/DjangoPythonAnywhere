@@ -1,0 +1,357 @@
+{% extends 'core/base.html' %} 
+{% block title %}Inicio{% endblock %} 
+{% load static %} 
+{% block content %}
+
+  <style>
+
+.product-item {
+  border-radius: 10px; /* Ajusta el valor de "10px" según tu preferencia para la curvatura de las esquinas */
+  overflow: hidden; /* Asegura que el contenido dentro del elemento respete el radio de las esquinas redondeadas */
+}
+
+
+  </style>
+
+  <div class="header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <nav class="navbar bg-light">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fa fa-home"></i>Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?filtro=Popular"><i class="fa fa-shopping-bag"></i>Populares</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?filtro=Reciente"><i class="fa fa-plus-square"></i>Nuevos productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Cuidado%20de%20Uñas"><i class="fas fa-hand-sparkles"></i>Cuidado de Uñas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Cuidado%20de%20Cabello"><i class="fas fa-user"></i></i></i>Cuidado de Cabello</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Cuidado%20de%20la%20Piel"><i class="fas fa-child"></i></i></i>Cuidado de la Piel</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Cuidado%20de%20Labios"><i class="fas fa-laugh-wink"></i></i>Cuidado de de Labios</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Maquillaje%20para%20ojos"><i class="fas fa-eye"></i></i>Maquillaje para Ojos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}?categoria=Electrodomesticos"><i class="fas fa-paint-brush"></i></i>Electrodomesticos</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="col-md-6">
+          <div class="header-slider normal-slider">
+                <div class="header-slider-item">
+                  <img src="{% static 'core/img/slider-1.jpg'%}" alt="Slider Image" />
+                  <div class="header-slider-caption">
+                    <p>
+                      Descubre un mundo de belleza que te inspira a brillar desde adentro hacia afuera.
+                    </p>
+                  
+                  </div>
+                </div>
+                <div class="header-slider-item">
+                  <img src="{% static 'core/img/slider-2.jpg'%}" alt="Slider Image" />                <div class="header-slider-caption">
+                    <p>
+                      Resalta tu belleza natural con nuestra exclusiva línea de productos.
+                    </p>
+                  
+                  </div>
+                </div>
+                <div class="header-slider-item">
+                  <img src="{% static 'core/img/slider-3.jpg'%}" alt="Slider Image" />                <div class="header-slider-caption">
+                    <p>
+                      Abraza la belleza en todas sus formas y muestra al mundo tu singularidad.
+                    </p>
+                
+                  </div>
+                </div>
+              </div>
+
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+        </div>
+
+        <div class="col-md-3">
+          <div class="header-img">
+            <div class="img-item">
+              <img src="{% static 'core/img/category-1.jpg'%}" />
+              <a class="img-text" href="">
+                <p>
+                  Dale a tu cabello teñido el amor que merece con nuestro shampoo diseñado para proteger y mantener tu color.
+                </p>
+              </a>
+            </div>
+            <div class="img-item">
+              <img src="{% static 'core/img/category-2.jpg'%}" />
+              <a class="img-text" href="">
+                <p>
+                  Nuestra tintura de cabello no solo añade color, sino también personalidad y confianza a tu apariencia única.
+                </p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand Start -->
+  <div class="brand">
+    <div class="container-fluid">
+      <div class="brand-slider">
+        {% for image in brand_images %}
+        <div class="brand-item"><img src="{{ image.image.url }}" alt="" /></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Brand End -->
+
+  <!-- Feature Start-->
+  <div class="feature">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-3 col-md-6 feature-col">
+          <div class="feature-content">
+            <i class="fab fa-cc-mastercard"></i>
+            <h2>Pagos seguros</h2>
+            <p>Compras protegidas, pagos seguros.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 feature-col">
+          <div class="feature-content">
+            <i class="fa fa-truck"></i>
+            <h2>Envíos internacionales</h2>
+            <p>Llevamos belleza a todo el mundo.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 feature-col">
+          <div class="feature-content">
+            <i class="fa fa-sync-alt"></i>
+            <h2>Garantía de 30 días</h2>
+            <p>Calidad garantizada en cada producto.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 feature-col">
+          <div class="feature-content">
+            <i class="fa fa-comments"></i>
+            <h2>Soporte las 24/7</h2>
+            <p>Soporte disponible sin descanso.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature End-->
+
+  <!-- Category Start-->
+  <div class="category">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="category-item ch-400">
+            <img src="{% static 'core/img/category-3.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Uñas impecables, cuidado excepcional.</p>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="category-item ch-250">
+            <img src="{% static 'core/img/category-4.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Cabello fuerte, belleza deslumbrante.</p>
+            </a>
+          </div>
+          <div class="category-item ch-150">
+            <img src="{% static 'core/img/category-5.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Elegancia en cada trazo: productos de uñas únicos.</p>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="category-item ch-150">
+            <img src="{% static 'core/img/category-6.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Nutre tu piel con productos de calidad premium.</p>
+            </a>
+          </div>
+          <div class="category-item ch-250">
+            <img src="{% static 'core/img/category-7.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Un soplo de frescura: mascarillas que rejuvenecen.</p>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="category-item ch-400">
+            <img src="{% static 'core/img/category-8.jpg' %}" />
+            <a class="category-name" href="">
+              <p>Transforma tu rutina capilar con nuestros productos especializados.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Category End-->
+
+  <div class="featured-product product">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h1>Productos Destacados</h1>
+      </div>
+      <div class="row align-items-center product-slider product-slider-4">
+        {% for producto in productos_aleatorios %}
+        <div class="col-lg-3">
+          <div class="product-item">
+            <div class="product-title">
+              <a href="#">{{ producto.nombre }}</a>
+            </div>
+            <div class="product-image">
+              <a class="btn" href="{% url 'product_detail' producto.id %}">
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" />
+              </a>
+              <div class="product-action">
+                {% if user.is_authenticated %}
+                  <a href="{% url 'add_to_cart' producto.id %}"><i class="fa fa-cart-plus"></i></a>
+                {% else %}
+                  <a href="{% url 'login' %}"><i class="fa fa-user"></i></a>
+                {% endif %}
+                <a href="{% url 'add_to_wishlist' producto.id %}" class="add-to-wishlist" data-product-id="{{ product.id }}">
+                  <i class="fa fa-heart"></i>
+              </a>
+                <a href="{% url 'product_detail' producto.id %}"><i class="fa fa-search"></i></a>
+              </div>
+            </div>
+            <div class="product-price">
+              <h3><span>$</span>{{ producto.precio }}</h3>
+              {% if producto.cantidad_disponible > 0 %}
+                {% if user.is_authenticated %}
+                  <a class="btn" href="{% url 'product_detail' producto.id %}">
+                    <i class="fa fa-shopping-cart"></i>Comprar
+                  </a>
+                {% else %}
+                  <a class="btn btn-disabled" href="{% url 'login' %}">Inicia Sesion para comprar</a>
+                {% endif %}
+              {% else %}
+                <button class="btn btn-disabled" disabled>Agotado</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        {% endfor %}
+      
+      
+      </div>
+    </div>
+  </div>
+  <!-- Featured Product End -->
+
+  <!-- Recent Product Start -->
+  <div class="recent-product product">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h1>Productos Recientes</h1>
+      </div>
+      <div class="row align-items-center product-slider product-slider-4">
+        {% for producto in ultimos_productos %}
+        <div class="col-lg-3">
+          <div class="product-item">
+            <div class="product-title">
+              <a href="#">{{ producto.nombre }}</a>
+            </div>
+            <div class="product-image">
+              <a class="btn" href="{% url 'product_detail' producto.id %}">
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" />
+              </a>
+              <div class="product-action">
+                {% if user.is_authenticated %}
+                  <a href="{% url 'add_to_cart' producto.id %}"><i class="fa fa-cart-plus"></i></a>
+                {% else %}
+                  <a href="{% url 'login' %}"><i class="fa fa-user"></i></a>
+                {% endif %}
+                <a href="{% url 'add_to_wishlist' producto.id %}" class="add-to-wishlist" data-product-id="{{ product.id }}">
+                  <i class="fa fa-heart"></i>
+              </a>
+                <a href="{% url 'product_detail' producto.id %}"><i class="fa fa-search"></i></a>
+              </div>
+            </div>
+            <div class="product-price">
+              <h3><span>$</span>{{ producto.precio }}</h3>
+              {% if producto.cantidad_disponible > 0 %}
+                {% if user.is_authenticated %}
+                  <a class="btn" href="{% url 'product_detail' producto.id %}">
+                    <i class="fa fa-shopping-cart"></i>Comprar
+                  </a>
+                {% else %}
+                  <a class="btn btn-disabled" href="{% url 'login' %}">Inicia Sesion para comprar</a>
+                {% endif %}
+              {% else %}
+                <button class="btn btn-disabled" disabled>Agotado</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        {% endfor %}
+      
+        
+        
+      
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('add_to_cart_link').addEventListener('click', function(event) {
+        event.preventDefault();  // Esto previene el comportamiento predeterminado del enlace
+        
+        // Añade tu código de AJAX aquí para enviar una solicitud POST al servidor
+    });
+    </script>
+    
+
+    <div class="review">
+      <div class="container-fluid">
+        <div class="row align-items-center review-slider normal-slider">
+          {% for comentario in comentarios %}
+          <div class="col-md-6">
+            <div class="review-slider-item">
+              <div class="review-img">
+                <img src="{{ comentario.imagen.url }}" alt="Imagen de Comentario" />
+              </div>
+              <div class="review-text">
+                <h2>{{ comentario.nombre_comprador }}</h2>
+                <h3></h3>
+                <p>{{ comentario.comentario }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+
+  <!-- Review End -->
+{% endblock %}

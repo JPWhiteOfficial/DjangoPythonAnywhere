@@ -1,0 +1,146 @@
+{% extends 'core/base.html' %}
+{% block title %}Lista de productos{% endblock %}
+
+{% load static %}
+{% block content %}
+ <!-- Breadcrumb Start -->
+ <div class="breadcrumb-wrap">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'product_list' %}">Productos</a></li>
+        <li class="breadcrumb-item active">Lista de Deseos</li>
+      </ul>
+    </div>
+  </div>
+  <!-- Breadcrumb End -->
+
+  <!-- Wishlist Start -->
+  <div class="wishlist-page">
+    <div class="container-fluid">
+        <div class="wishlist-page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if wish_items %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Añadir al Carrito</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody class="align-middle">
+                                {% for item in wish_items %}
+                                <tr>
+                                    <td>
+                                        <div class="img">
+                                            <a href="#">
+                                                <img src="{{ item.product.imagen.url }}" alt="{{ item.product.nombre }}" />
+                                            </a>
+                                            <p>{{ item.product.nombre }}</p>
+                                        </div>
+                                    </td>
+                                    <td>${{ item.product.precio }} COP</td>
+                                    <td>
+                                        <a class="btn" href="{% url 'move_to_cart' item.product.id %}" %}">
+                                            <i class="fa fa-shopping-cart"></i>Añadir al Carrito
+                                          </a>
+                                    </td>
+                                    <td>
+                                        <button class="btn-delete" data-product-id="{{ item.product.id }}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info" role="alert">
+                        <strong>No hay elementos agregados a la lista de deseos.</strong>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Wishlist End -->
+  <script>
+    $(document).ready(function () {
+        $(".btn-cart").on("click", function () {
+            var productId = $(this).data("product-id");
+            addToCart(productId, 1); // 1 es la cantidad fija al mover a carrito
+        });
+
+        $(".btn-delete").on("click", function (event) {
+            event.preventDefault();
+            var productId = $(this).data("product-id");
+            removeFromWishlist(productId);
+        });
+
+        function addToCart(productId, quantity) {
+            var csrfToken = getCookie('csrftoken');
+
+            // En lugar de usar AJAX, simplemente redirige al usuario a la vista 'add_to_cart'.
+            window.location.href = "/add_to_cart/" + productId + "/?quantity=" + quantity + "&csrfmiddlewaretoken=" + csrfToken;
+        }
+
+        function removeFromWishlist(productId) {
+            var csrfToken = getCookie('csrftoken');
+
+            $.ajax({
+                url: "/remove_from_wishlist/" + productId + "/",
+                type: "POST",
+                data: {
+                    product_id: productId,
+                    csrfmiddlewaretoken: csrfToken
+                },
+                dataType: "json",
+                success: function (data) {
+                    // Eliminar el elemento de la lista de deseos de la página sin recargarla
+                    $("button[data-product-id='" + productId + "']").closest("tr").remove();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        // Funciones auxiliares para manejar el token CSRF
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + '=') {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function csrfSafeMethod(method) {
+            return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+                }
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

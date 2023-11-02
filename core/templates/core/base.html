@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>{% block title%} {% endblock%} | Mi Web</title>
+  {% load static %}
+  
+ <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- CSS Libraries -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+<link href="{% static 'core/css/mainstyle.css' %}" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B4gt1OgOyR0Z6ycPMz3Fmg1JwzVVm+GwI6Bi2a4B8npUj7mEVdoWrRbFtA4fhuP" crossorigin="anonymous">
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-5mM/9t2Ui6OyWkfIPE08iCRi/xlJ7I8/AAUjN0c5F7R06IexJvp0sI0d7uk5lMjGs" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz1wD2urDDInEMAZLts13eeB4H9UQapP6BWHujhX8rM5P0paCWI4E0FwaV" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-pzj5f+UAhygMl/7fhaxKLS7shf5Y7oXvxmznPZOqcW/nWlRJzg0IHKVoRXfn0l1A" crossorigin="anonymous"></script>
+<script src="{% static 'core/js/main.js' %}"></script>
+
+<!-- IMPORTACION DE SLICKER -->
+<link rel="stylesheet" href="{% static 'lib/slick/slick.css' %}" type="text/css">
+<link rel="stylesheet" href="{% static 'lib/slick/slick-theme.css' %}" type="text/css">
+
+
+<style>
+  .cart {
+    color: #003171;
+    background: #ffffff;
+    border-color: #003171;
+  }
+
+  .wishlist {
+    color: #003171;
+    background: #ffffff;
+    border-color: #003171;
+  }
+
+</style>
+
+  
+</head>
+
+  <body>
+
+    {% if messages %}
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="alert alert-success mb-0" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#successModal').modal('show');
+            setTimeout(function(){
+                $('#successModal').modal('hide');
+            }, 5000); // Cierra el modal después de 5 segundos
+        });
+    </script>
+{% endif %}
+
+
+    <!-- Top bar Start -->
+    <div class="top-bar">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <i class="fa fa-envelope"></i>
+            {{ correo_empresa.correo }}
+          </div>
+          <div class="col-sm-6">
+            <i class="fa fa-phone-alt"></i>
+            {{ correo_empresa.telefono }}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Top bar End -->
+    <!-- Navegación -->
+    
+    <div class="nav">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+          <a href="#" class="navbar-brand"></a>
+          <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav mr-auto">
+              <a href="{% url 'home' %}" class="nav-item nav-link">Inicio</a>
+              <a href="{% url 'product_list' %}" class="nav-item nav-link">Productos</a>
+    
+              <a href="{% url 'contacto' %}" class="nav-item nav-link">Contactenos</a>
+              
+              {% if user.is_authenticated %}
+              <a href="{% url 'wishlist' %}" class="nav-item nav-link">Lista de Deseos</a>
+              <a href="{% url 'pedidos_view' %}" class="nav-item nav-link">Lista de Pedidos</a>
+    <a href="{% url 'my-account' %}" class="nav-item nav-link">Mi Cuenta</a>
+{% endif %}
+
+    
+            </div>
+            <div class="navbar-nav ml-auto">  
+              {% comment %} autenticacion si esta logueado {% endcomment %}
+              {% if not request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'signup' %}">Registro</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'home' %}">Hola, {{ request.user.username }}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+                </li>
+              {% endif %}
+            </div>
+            
+          </div>
+        </nav>
+      </div>
+    </div>
+    
+   
+    <!-- Cabecera -->
+    <header class="masthead">
+      <div class="bottom-bar">
+        <div class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-9">
+              <div class="logo">
+                <a href="{% url 'home' %}">
+                  <img src="/static/core/img/logo.png" alt="Logo" />
+                </a>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="user">
+                  {% if user.is_authenticated %}
+                  <a href="{% url 'wishlist' %}" class="btn wishlist">
+                      <i class="fa fa-heart"></i>
+                      <span>({{ request.session.wishlist|length }})</span>
+                  </a>
+                  <a href="{% url 'cart' %}" class="btn cart" id="cart">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>({{ request.session.cart|length }})</span>
+                  </a>
+                  {% else %}
+                  <a href="{% url 'login' %}" class="btn wishlist" id="wishlist">
+                      <i class="fa fa-heart"></i>
+                      <span>({{ request.session.wishlist|length }})</span>
+                  </a>
+                  <a href="{% url 'login' %}" class="btn cart">
+                      <i class="fa fa-shopping-cart"></i>
+                      <span>({{ request.session.cart|length }})</span>
+                  </a>
+                  {% endif %}
+              </div>
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </header>
+    
+
+    <!-- contenido es la parte que cambia por ejemplo home.html-->
+    {% block content%} 
+    {% endblock%} 
+    {% if request.path != "/" %}
+    <hr />
+    {% endif %}
+    <div class="footer_container">
+      <div class="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-widget">
+                <h2>Contactános</h2>
+                <div class="contact-info">
+                  <p>
+                    <i class="fa fa-map-marker"></i> {{ correo_empresa.direccion }}
+                  </p>
+                  <p>
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ correo_empresa.correo }}" target="_blank"
+                      style="color: #353535; text-decoration: none;">{{ correo_empresa.correo }}</a>
+                  </p>
+
+                  <p><i class="fa fa-phone"></i> {{ correo_empresa.telefono }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-widget">
+                <h2>Siguenos</h2>
+                <div class="contact-info">
+                  <div class="social">
+                    <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtu.be/E_xaxzYjc7I" target="_blank"><i class="fab fa-youtube"></i></a>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-widget">
+                <h2>Informacion</h2>
+                <ul>
+                  <li><a href="{% url 'sobre-nosotros' %}">Sobre Nosotros</a></li>
+                  <li><a href="{% url 'politica-privacidad' %}">Política de privacidad</a></li>
+                  <li><a href="{% url 'terminos-condiciones' %}">Terminos y Condiciones</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-widget">
+                <h2>Politica de compras</h2>
+                <ul>
+                  <li><a href="{% url 'politica-pagos' %}">Política de pago</a></li>
+                  <li><a href="{% url 'politica-envios' %}">Politica de envios</a></li>
+                  <li><a href="{% url 'politica-devoluciones' %}">Política de devoluciones</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="row payment align-items-center">
+            <div class="col-md-6">
+              <div class="payment-method">
+                <h2>We Accept:</h2>
+                <img src="{% static 'core/img/payment-method.png' %}" alt="Payment Method" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="payment-security">
+                <h2>Asegurado por:</h2>
+                <img src="{% static 'core/img/godaddy.svg' %}" alt="Payment Security" />
+                <img src="{% static 'core/img/norton.svg' %}" alt="Payment Security" />
+                <img src="{% static 'core/img/ssl.svg' %}" alt="Payment Security" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer End -->
+
+      <!-- Footer Bottom Start -->
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 copyright">
+              <p>{{ copyright.frase }}</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Footer Bottom End -->
+    </div>
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <!-- Bootstrap y Javascripts -->
+
+    <!-- IMPORTACION SLICKER -->
+    
+
+    <script src="{% static 'lib/jquery/jquery-3.6.4.min.js' %}"></script>
+    <script src="{% static 'lib/slick/slick.min.js' %}"></script>
+    <script src="{% static 'js/slicker.js' %}"></script>
+  </body>
+
+
+</html>
